@@ -162,6 +162,7 @@ Variables principales:
 - `AUTH_USERNAME` / `AUTH_PASSWORD_HASH` para login local por sesion.
 - `PUBLIC_ENDPOINTS` (endpoints separados por coma que no requieren login).
 - `APP_HOST` / `APP_PORT` para arranque directo con `python app.py`.
+- `HTTP_BIND_ADDRESS` / `HTTP_BIND_PORT` para publicar el Nginx del contenedor en el host.
 - `SESSION_COOKIE_SECURE` para cookies solo por HTTPS.
 - `INIT_DB_ON_BOOT` para crear tablas y seed inicial al arrancar.
 - `TELEGRAM_BOT_TOKEN`.
