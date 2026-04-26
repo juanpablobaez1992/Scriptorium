@@ -106,6 +106,54 @@ HTTPS con certificados montados:
 docker compose -f docker-compose.yml -f docker-compose.https.yml up -d --build
 ```
 
+## Deploy automatico desde GitHub
+
+El repo incluye:
+
+- `.github/workflows/deploy.yml`
+- `deploy/vps/deploy.sh`
+
+Flujo:
+
+1. Haces push a `main`.
+2. GitHub Actions valida el codigo con `compileall`.
+3. La action entra por SSH al VPS.
+4. En el VPS hace `git pull --ff-only origin main`.
+5. Ejecuta `docker compose up -d --build`.
+6. Verifica `/healthz`.
+
+Preparacion del VPS:
+
+```bash
+sudo mkdir -p /srv/scriptorium
+cd /srv/scriptorium
+git clone https://github.com/juanpablobaez1992/Scriptorium.git .
+cp .env.example .env
+```
+
+Despues:
+
+- Completa `.env` con tus secretos reales.
+- Instala Docker y Docker Compose.
+- Si usaras HTTPS, coloca los certificados y define `DEPLOY_HTTPS=1` en el entorno del proceso remoto o como secreto del workflow.
+
+Secrets de GitHub necesarios:
+
+- `VPS_HOST`
+- `VPS_USER`
+- `VPS_SSH_KEY`
+- `VPS_PORT`
+- `VPS_APP_DIR`
+- `VPS_HEALTHCHECK_URL`
+- `VPS_DEPLOY_HTTPS`
+
+Valores sugeridos:
+
+- `VPS_PORT=22`
+- `VPS_APP_DIR=/srv/scriptorium`
+- `VPS_HEALTHCHECK_URL=http://127.0.0.1/healthz`
+- `VPS_DEPLOY_HTTPS=0`
+
 ## Configuracion `.env`
 
 Variables principales:
