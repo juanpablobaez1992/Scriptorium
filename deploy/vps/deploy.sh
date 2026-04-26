@@ -3,6 +3,7 @@ set -euo pipefail
 
 APP_DIR="${1:-/srv/scriptorium}"
 HEALTHCHECK_URL="${2:-http://127.0.0.1/healthz}"
+DEPLOY_REF="${3:-main}"
 COMPOSE_FILES="-f docker-compose.yml"
 
 if [[ ! -d "$APP_DIR" ]]; then
@@ -17,9 +18,9 @@ if [[ ! -f ".env" ]]; then
   exit 1
 fi
 
-git fetch origin main
-git checkout main
-git pull --ff-only origin main
+git fetch origin "$DEPLOY_REF"
+git checkout "$DEPLOY_REF"
+git pull --ff-only origin "$DEPLOY_REF"
 
 if [[ "${DEPLOY_HTTPS:-0}" == "1" ]]; then
   if [[ ! -f "docker-compose.https.yml" ]]; then

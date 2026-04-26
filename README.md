@@ -110,17 +110,26 @@ docker compose -f docker-compose.yml -f docker-compose.https.yml up -d --build
 
 El repo incluye:
 
+- `.github/workflows/ci.yml`
 - `.github/workflows/deploy.yml`
 - `deploy/vps/deploy.sh`
 
 Flujo:
 
-1. Haces push a `main`.
+1. Haces push a `staging` o `main`.
 2. GitHub Actions valida el codigo con `compileall`.
-3. La action entra por SSH al VPS.
-4. En el VPS hace `git pull --ff-only origin main`.
-5. Ejecuta `docker compose up -d --build`.
-6. Verifica `/healthz`.
+3. Produccion no se actualiza automaticamente.
+4. Cuando quieras publicar, ejecutas manualmente `Deploy Production`.
+5. La action entra por SSH al VPS.
+6. En el VPS hace `git pull --ff-only origin main`.
+7. Ejecuta `docker compose up -d --build`.
+8. Verifica `/healthz`.
+
+Flujo recomendado de ramas:
+
+- `staging`: trabajo normal y pruebas.
+- `main`: rama estable candidata a produccion.
+- `Deploy Production`: solo manual, cuando decidas publicar.
 
 Preparacion del VPS:
 

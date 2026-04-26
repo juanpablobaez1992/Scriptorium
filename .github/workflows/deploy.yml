@@ -1,10 +1,12 @@
-name: Deploy VPS
+name: Deploy Production
 
 on:
-  push:
-    branches:
-      - main
   workflow_dispatch:
+    inputs:
+      ref:
+        description: Git ref to deploy to production
+        required: true
+        default: main
 
 jobs:
   deploy:
@@ -13,6 +15,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref }}
 
       - name: Setup Python
         uses: actions/setup-python@v5
@@ -28,13 +32,14 @@ jobs:
           APP_DIR: ${{ secrets.VPS_APP_DIR || '/srv/scriptorium' }}
           HEALTHCHECK_URL: ${{ secrets.VPS_HEALTHCHECK_URL || 'http://127.0.0.1:18082/healthz' }}
           DEPLOY_HTTPS: ${{ secrets.VPS_DEPLOY_HTTPS || '0' }}
+          DEPLOY_REF: ${{ inputs.ref }}
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_SSH_KEY }}
           port: ${{ secrets.VPS_PORT || 22 }}
-          envs: APP_DIR,HEALTHCHECK_URL,DEPLOY_HTTPS
+          envs: APP_DIR,HEALTHCHECK_URL,DEPLOY_HTTPS,DEPLOY_REF
           script: |
             cd "${APP_DIR:-/srv/scriptorium}"
             chmod +x deploy/vps/deploy.sh
-            ./deploy/vps/deploy.sh "${APP_DIR:-/srv/scriptorium}" "${HEALTHCHECK_URL:-http://127.0.0.1:18082/healthz}"
+            ./deploy/vps/deploy.sh "${APP_DIR:-/srv/scriptorium}" "${HEALTHCHECK_URL:-http://127.0.0.1:18082/healthz}" "${DEPLOY_REF:-main}"
