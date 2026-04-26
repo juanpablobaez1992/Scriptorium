@@ -91,6 +91,12 @@ Persistencia:
 - `./data/instance` guarda la base SQLite.
 - `./data/storage` guarda audios, imagenes y documentos.
 
+Servicios del stack:
+
+- `app`: interfaz web Flask/Gunicorn.
+- `nginx`: proxy reverso publico.
+- `bot`: polling de Telegram con el token de `.env`.
+
 HTTP por defecto:
 
 - `docker-compose.yml` publica solo Nginx en `80`.
