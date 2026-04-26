@@ -9,6 +9,17 @@ document.addEventListener("DOMContentLoaded", () => {
   if (!textarea) return;
   textarea.addEventListener("input", () => {
     const counter = document.getElementById("ideaCharCount");
-    if (counter) counter.textContent = String(textarea.value.length);
+    if (counter) {
+      const length = textarea.value.length;
+      counter.textContent = String(length);
+      
+      if (length > 0 && length < 30) {
+        counter.style.color = "#f59e0b"; // Naranja (muy corto)
+      } else if (length >= 30) {
+        counter.style.color = "#10b981"; // Verde (buen desarrollo)
+      } else {
+        counter.style.color = "inherit";
+      }
+    }
   });
 });

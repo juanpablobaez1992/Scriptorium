@@ -10,6 +10,7 @@
     <div class="mb-3">
       <label class="form-label">Texto de la idea</label>
       <textarea class="form-control" name="text" rows="6" required></textarea>
+      <div class="idea-counter text-muted mt-1">Caracteres: <span id="ideaCharCount">0</span></div>
     </div>
     <div class="mb-3">
       <label class="form-label">Título (opcional)</label>
@@ -33,4 +34,7 @@
     </div>
   </div>
 </form>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/idea_form.js') }}"></script>
 {% endblock %}
