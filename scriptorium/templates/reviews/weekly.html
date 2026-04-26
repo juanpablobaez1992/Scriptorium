@@ -1,0 +1,22 @@
+{# templates/reviews/weekly.html
+   Revisión semanal de ideas.
+   Arquitectura: Views. #}
+{% extends "base.html" %}
+{% block title %}Revisión semanal | Scriptorium{% endblock %}
+{% block content %}
+<h1 class="h3 mb-3">Revisión semanal</h1>
+<div class="row g-3">
+  <div class="col-md-6">
+    <div class="card"><div class="card-header">Ideas nuevas</div><ul class="list-group list-group-flush">{% for i in new_ideas %}<li class="list-group-item"><a href="{{ url_for('ideas.idea_detail', id=i.id) }}">{{ i.title }}</a></li>{% else %}<li class="list-group-item text-muted">Sin nuevas</li>{% endfor %}</ul></div>
+  </div>
+  <div class="col-md-6">
+    <div class="card"><div class="card-header">Sin revisar</div><ul class="list-group list-group-flush">{% for i in unreviewed[:15] %}<li class="list-group-item d-flex justify-content-between"><a href="{{ url_for('ideas.idea_detail', id=i.id) }}">{{ i.title }}</a><form method="post" action="{{ url_for('review.review_action', idea_id=i.id) }}"><input type="hidden" name="action" value="revisada"><button class="btn btn-sm btn-outline-success">Marcar</button></form></li>{% else %}<li class="list-group-item text-muted">Todo revisado</li>{% endfor %}</ul></div>
+  </div>
+  <div class="col-md-6">
+    <div class="card"><div class="card-header">Ideas huérfanas</div><ul class="list-group list-group-flush">{% for i in orphans[:15] %}<li class="list-group-item"><a href="{{ url_for('ideas.idea_detail', id=i.id) }}">{{ i.title }}</a></li>{% else %}<li class="list-group-item text-muted">Sin huérfanas</li>{% endfor %}</ul></div>
+  </div>
+  <div class="col-md-6">
+    <div class="card"><div class="card-header">Proyectos emergentes</div><ul class="list-group list-group-flush">{% for p in emerging %}<li class="list-group-item"><strong>{{ p.name }}</strong> · {{ p.ideas_count }} ideas · confianza {{ p.confidence }}</li>{% else %}<li class="list-group-item text-muted">Sin emergentes</li>{% endfor %}</ul></div>
+  </div>
+</div>
+{% endblock %}

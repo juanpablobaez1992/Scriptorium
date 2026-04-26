@@ -1,0 +1,54 @@
+{# templates/ideas/list.html
+   Lista y filtros de ideas.
+   Arquitectura: Views. #}
+{% extends "base.html" %}
+{% block title %}Ideas | Scriptorium{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h1 class="h3">Ideas</h1>
+  <a class="btn btn-primary" href="{{ url_for('ideas.new_idea') }}">Nueva idea</a>
+</div>
+<form class="card card-body mb-3" method="get">
+  <div class="row g-2">
+    <div class="col-md-3"><input class="form-control" name="q" placeholder="Buscar texto..." value="{{ request.args.get('q','') }}"></div>
+    <div class="col-md-2">
+      <select class="form-select" name="scope_id"><option value="">Ámbito</option>{% for x in scopes %}<option value="{{x.id}}" {% if request.args.get('scope_id')==x.id|string %}selected{% endif %}>{{x.name}}</option>{% endfor %}</select>
+    </div>
+    <div class="col-md-2">
+      <select class="form-select" name="project_id"><option value="">Proyecto</option>{% for x in projects %}<option value="{{x.id}}" {% if request.args.get('project_id')==x.id|string %}selected{% endif %}>{{x.name}}</option>{% endfor %}</select>
+    </div>
+    <div class="col-md-2">
+      <select class="form-select" name="category_id"><option value="">Categoría</option>{% for x in categories %}<option value="{{x.id}}" {% if request.args.get('category_id')==x.id|string %}selected{% endif %}>{{x.name}}</option>{% endfor %}</select>
+    </div>
+    <div class="col-md-1">
+      <select class="form-select" name="status"><option value="">Estado</option>{% for x in statuses %}<option {% if request.args.get('status')==x %}selected{% endif %}>{{x}}</option>{% endfor %}</select>
+    </div>
+    <div class="col-md-1">
+      <select class="form-select" name="maturity_level"><option value="">Madurez</option>{% for x in maturities %}<option {% if request.args.get('maturity_level')==x %}selected{% endif %}>{{x}}</option>{% endfor %}</select>
+    </div>
+    <div class="col-md-1">
+      <button class="btn btn-outline-primary w-100">Filtrar</button>
+    </div>
+  </div>
+</form>
+<div class="list-group">
+  {% for idea in ideas %}
+    <a class="list-group-item list-group-item-action" href="{{ url_for('ideas.idea_detail', id=idea.id) }}">
+      <div class="d-flex justify-content-between">
+        <strong>{{ idea.title }}</strong>
+        <small>{{ idea.created_at.strftime("%Y-%m-%d") }}</small>
+      </div>
+      <div class="small text-muted">{{ idea.summary or "-" }}</div>
+      <div class="mt-1">
+        <span class="badge text-bg-light">{{ idea.scope.name if idea.scope else "Sin ámbito" }}</span>
+        <span class="badge text-bg-light">{{ idea.project.name if idea.project else "Sin proyecto" }}</span>
+        <span class="badge text-bg-light">{{ idea.category.name if idea.category else "Sin categoría" }}</span>
+        <span class="badge text-bg-info">{{ idea.status }}</span>
+        <span class="badge text-bg-secondary">Rel {{ idea.relation_count() }}</span>
+      </div>
+    </a>
+  {% else %}
+    <div class="list-group-item text-muted">No hay ideas con estos filtros.</div>
+  {% endfor %}
+</div>
+{% endblock %}

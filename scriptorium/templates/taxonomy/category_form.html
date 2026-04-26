@@ -1,0 +1,6 @@
+{# templates/taxonomy/category_form.html
+   Placeholder reutilizable de formulario de categoría.
+   Arquitectura: Views. #}
+<form method="post" action="{{ url_for('taxonomy.create_category') }}">
+  <input name="name" placeholder="Nombre">
+</form>

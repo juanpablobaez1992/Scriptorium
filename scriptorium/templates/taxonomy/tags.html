@@ -1,0 +1,35 @@
+{# templates/taxonomy/tags.html
+   Gestión de etiquetas.
+   Arquitectura: Views. #}
+{% extends "base.html" %}
+{% block title %}Etiquetas | Scriptorium{% endblock %}
+{% block content %}
+<h1 class="h3 mb-3">Etiquetas</h1>
+<div class="row g-3">
+  <div class="col-md-4">
+    <form class="card card-body mb-3" method="post" action="{{ url_for('taxonomy.create_tag') }}">
+      <h2 class="h6">Nueva etiqueta</h2>
+      <input class="form-control mb-2" name="name" placeholder="Nombre" required>
+      <button class="btn btn-primary">Crear</button>
+    </form>
+    <form class="card card-body" method="post" action="{{ url_for('taxonomy.merge_tags') }}">
+      <h2 class="h6">Fusionar etiquetas</h2>
+      <select class="form-select mb-2" name="source_id"><option value="">Origen</option>{% for t in tags %}<option value="{{ t.id }}">{{ t.name }}</option>{% endfor %}</select>
+      <select class="form-select mb-2" name="target_id"><option value="">Destino</option>{% for t in tags %}<option value="{{ t.id }}">{{ t.name }}</option>{% endfor %}</select>
+      <button class="btn btn-outline-secondary">Fusionar</button>
+    </form>
+  </div>
+  <div class="col-md-8">
+    <div class="list-group">
+      {% for t in tags %}
+      <div class="list-group-item d-flex justify-content-between">
+        <strong>{{ t.name }}</strong>
+        <span class="badge text-bg-light">{{ t.ideas|length }} ideas</span>
+      </div>
+      {% else %}
+      <div class="list-group-item text-muted">Sin etiquetas.</div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}

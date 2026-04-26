@@ -1,0 +1,32 @@
+{# templates/tasks/list.html
+   Gestión básica de tareas.
+   Arquitectura: Views. #}
+{% extends "base.html" %}
+{% block title %}Tareas | Scriptorium{% endblock %}
+{% block content %}
+<h1 class="h3 mb-3">Tareas</h1>
+<form class="card card-body mb-3" method="post" action="{{ url_for('review.create_task') }}">
+  <div class="row g-2">
+    <div class="col-md-4"><input class="form-control" name="title" placeholder="Título" required></div>
+    <div class="col-md-4"><input class="form-control" name="description" placeholder="Descripción"></div>
+    <div class="col-md-2"><select class="form-select" name="idea_id"><option value="">Idea (opcional)</option>{% for i in ideas[:200] %}<option value="{{ i.id }}">{{ i.title }}</option>{% endfor %}</select></div>
+    <div class="col-md-1"><input type="number" class="form-control" name="priority" min="1" max="5" value="3"></div>
+    <div class="col-md-1"><button class="btn btn-primary w-100">Crear</button></div>
+  </div>
+</form>
+<div class="list-group">
+  {% for t in tasks %}
+  <form class="list-group-item" method="post" action="{{ url_for('review.update_task', id=t.id) }}">
+    <div class="row g-2 align-items-center">
+      <div class="col-md-4"><input class="form-control form-control-sm" name="title" value="{{ t.title }}"></div>
+      <div class="col-md-3"><input class="form-control form-control-sm" name="description" value="{{ t.description or '' }}"></div>
+      <div class="col-md-2"><select class="form-select form-select-sm" name="status"><option {% if t.status=='pendiente' %}selected{% endif %}>pendiente</option><option {% if t.status=='en_proceso' %}selected{% endif %}>en_proceso</option><option {% if t.status=='terminada' %}selected{% endif %}>terminada</option><option {% if t.status=='archivada' %}selected{% endif %}>archivada</option></select></div>
+      <div class="col-md-1"><input type="number" class="form-control form-control-sm" name="priority" value="{{ t.priority }}"></div>
+      <div class="col-md-2"><button class="btn btn-sm btn-outline-secondary">Actualizar</button></div>
+    </div>
+  </form>
+  {% else %}
+  <div class="list-group-item text-muted">Sin tareas.</div>
+  {% endfor %}
+</div>
+{% endblock %}

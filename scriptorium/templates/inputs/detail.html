@@ -1,0 +1,34 @@
+{# templates/inputs/detail.html
+   Detalle de una entrada de archivo.
+   Arquitectura: Views. #}
+{% extends "base.html" %}
+{% block title %}Entrada {{ input_item.id }} | Scriptorium{% endblock %}
+{% block content %}
+<h1 class="h3 mb-3">Entrada #{{ input_item.id }}</h1>
+<div class="card card-body mb-3">
+  <div><strong>Tipo:</strong> {{ input_item.file_type }}</div>
+  <div><strong>Estado:</strong> {{ input_item.status }}</div>
+  <div><strong>Ruta:</strong> <code>{{ input_item.local_path }}</code></div>
+  <div><strong>Transcripción:</strong> {{ input_item.transcription_text or "-" }}</div>
+  <div><strong>OCR:</strong> {{ input_item.ocr_text or "-" }}</div>
+  {% if input_item.idea_id %}
+    <div><strong>Idea:</strong> <a href="{{ url_for('ideas.idea_detail', id=input_item.idea_id) }}">Ir a detalle</a></div>
+  {% endif %}
+</div>
+<div class="row g-3">
+  <div class="col-md-6">
+    <form class="card card-body" method="post" action="{{ url_for('inputs.describe_input', id=input_item.id) }}">
+      <h2 class="h6">Agregar descripción</h2>
+      <textarea class="form-control mb-2" name="description" rows="3" placeholder="Describe esta entrada"></textarea>
+      <button class="btn btn-primary">Guardar descripción</button>
+    </form>
+  </div>
+  <div class="col-md-6">
+    <form class="card card-body" method="post" action="{{ url_for('inputs.reprocess_input', id=input_item.id) }}">
+      <h2 class="h6">Reprocesar</h2>
+      <p class="small text-muted">Intenta transcribir u OCR de nuevo con la configuración actual.</p>
+      <button class="btn btn-outline-secondary">Reprocesar</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

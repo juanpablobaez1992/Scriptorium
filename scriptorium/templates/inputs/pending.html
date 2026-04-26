@@ -1,0 +1,19 @@
+{# templates/inputs/pending.html
+   Lista de entradas pendientes.
+   Arquitectura: Views. #}
+{% extends "base.html" %}
+{% block title %}Pendientes | Scriptorium{% endblock %}
+{% block content %}
+<h1 class="h3 mb-3">Entradas pendientes</h1>
+<div class="list-group">
+  {% for item in inputs %}
+  <a class="list-group-item list-group-item-action" href="{{ url_for('inputs.input_detail', id=item.id) }}">
+    <strong>#{{ item.id }} {{ item.file_type }}</strong>
+    <div class="small text-muted">Estado: {{ item.status }} · {{ item.created_at.strftime("%Y-%m-%d %H:%M") }}</div>
+    <div class="small">{{ item.original_filename or item.local_path }}</div>
+  </a>
+  {% else %}
+  <div class="list-group-item text-muted">No hay pendientes.</div>
+  {% endfor %}
+</div>
+{% endblock %}

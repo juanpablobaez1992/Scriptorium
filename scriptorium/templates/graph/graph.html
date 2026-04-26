@@ -1,0 +1,23 @@
+{# templates/graph/graph.html
+   Vista interactiva de grafo con Cytoscape.
+   Arquitectura: Views. #}
+{% extends "base.html" %}
+{% block title %}Grafo | Scriptorium{% endblock %}
+{% block content %}
+<h1 class="h3 mb-3">Grafo de relaciones</h1>
+<div class="card card-body mb-3">
+  <div class="row g-2">
+    <div class="col-md-2"><select class="form-select" id="scopeFilter"><option value="">Ámbito</option>{% for s in scopes %}<option value="{{ s.id }}">{{ s.name }}</option>{% endfor %}</select></div>
+    <div class="col-md-2"><select class="form-select" id="projectFilter"><option value="">Proyecto</option>{% for p in projects %}<option value="{{ p.id }}">{{ p.name }}</option>{% endfor %}</select></div>
+    <div class="col-md-2"><select class="form-select" id="categoryFilter"><option value="">Categoría</option>{% for c in categories %}<option value="{{ c.id }}">{{ c.name }}</option>{% endfor %}</select></div>
+    <div class="col-md-2"><input class="form-control" id="minStrength" type="number" step="0.1" min="0" max="1" value="0"></div>
+    <div class="col-md-2"><div class="form-check mt-2"><input class="form-check-input" id="coreOnly" type="checkbox"><label class="form-check-label">Solo núcleo</label></div></div>
+    <div class="col-md-2"><button class="btn btn-primary w-100" id="reloadGraph">Aplicar</button></div>
+  </div>
+</div>
+<div id="graphContainer" style="height: 70vh; border: 1px solid #ddd; border-radius: 8px;"></div>
+{% endblock %}
+{% block scripts %}
+<script src="https://unpkg.com/cytoscape/dist/cytoscape.min.js"></script>
+<script src="{{ url_for('static', filename='js/graph.js') }}"></script>
+{% endblock %}

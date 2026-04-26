@@ -1,0 +1,6 @@
+{# templates/taxonomy/tag_form.html
+   Placeholder reutilizable de formulario de etiqueta.
+   Arquitectura: Views. #}
+<form method="post" action="{{ url_for('taxonomy.create_tag') }}">
+  <input name="name" placeholder="Nombre">
+</form>

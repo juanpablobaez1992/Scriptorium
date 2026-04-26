@@ -1,0 +1,29 @@
+{# templates/suggestions/list.html
+   Lista de sugerencias de taxonomía.
+   Arquitectura: Views. #}
+{% extends "base.html" %}
+{% block title %}Sugerencias | Scriptorium{% endblock %}
+{% block content %}
+<h1 class="h3 mb-3">Sugerencias del sistema</h1>
+<div class="list-group">
+  {% for s in suggestions %}
+  <div class="list-group-item">
+    <div class="d-flex justify-content-between">
+      <strong>{{ s.suggestion_type }}: {{ s.name }}</strong>
+      <span class="badge {% if s.status == 'pendiente' %}text-bg-warning{% else %}text-bg-secondary{% endif %}">{{ s.status }}</span>
+    </div>
+    <div class="small">{{ s.reason }}</div>
+    <div class="small text-muted">Confianza: {{ s.confidence }} · {{ s.created_at.strftime("%Y-%m-%d") }}</div>
+    {% if s.status == "pendiente" %}
+      <div class="mt-2 d-flex gap-2">
+        <form method="post" action="{{ url_for('suggestions.accept_suggestion', id=s.id) }}"><button class="btn btn-sm btn-success">Aceptar</button></form>
+        <form method="post" action="{{ url_for('suggestions.reject_suggestion', id=s.id) }}"><button class="btn btn-sm btn-danger">Rechazar</button></form>
+        <form method="post" action="{{ url_for('suggestions.ignore_suggestion', id=s.id) }}"><button class="btn btn-sm btn-outline-secondary">Ignorar</button></form>
+      </div>
+    {% endif %}
+  </div>
+  {% else %}
+  <div class="list-group-item text-muted">No hay sugerencias.</div>
+  {% endfor %}
+</div>
+{% endblock %}

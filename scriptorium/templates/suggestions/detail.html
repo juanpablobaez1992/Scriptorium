@@ -1,0 +1,17 @@
+{# templates/suggestions/detail.html
+   Detalle de sugerencia.
+   Arquitectura: Views. #}
+{% extends "base.html" %}
+{% block title %}Sugerencia {{ suggestion.id }} | Scriptorium{% endblock %}
+{% block content %}
+<h1 class="h3">{{ suggestion.suggestion_type }} · {{ suggestion.name }}</h1>
+<p>{{ suggestion.reason }}</p>
+<p class="text-muted">Confianza {{ suggestion.confidence }} | Estado {{ suggestion.status }}</p>
+{% if suggestion.status == "pendiente" %}
+<div class="d-flex gap-2">
+  <form method="post" action="{{ url_for('suggestions.accept_suggestion', id=suggestion.id) }}"><button class="btn btn-success">Aceptar</button></form>
+  <form method="post" action="{{ url_for('suggestions.reject_suggestion', id=suggestion.id) }}"><button class="btn btn-danger">Rechazar</button></form>
+  <form method="post" action="{{ url_for('suggestions.ignore_suggestion', id=suggestion.id) }}"><button class="btn btn-outline-secondary">Ignorar</button></form>
+</div>
+{% endif %}
+{% endblock %}

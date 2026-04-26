@@ -1,0 +1,39 @@
+{# templates/taxonomy/categories.html
+   Gestión de categorías y subcategorías.
+   Arquitectura: Views. #}
+{% extends "base.html" %}
+{% block title %}Categorías | Scriptorium{% endblock %}
+{% block content %}
+<h1 class="h3 mb-3">Categorías</h1>
+<div class="row g-3">
+  <div class="col-md-4">
+    <form class="card card-body mb-3" method="post" action="{{ url_for('taxonomy.create_category') }}">
+      <h2 class="h6">Nueva categoría</h2>
+      <input class="form-control mb-2" name="name" placeholder="Nombre" required>
+      <textarea class="form-control mb-2" name="description" placeholder="Descripción"></textarea>
+      <select class="form-select mb-2" name="parent_id"><option value="">Sin padre (categoría)</option>{% for c in categories %}<option value="{{ c.id }}">{{ c.name }}</option>{% endfor %}</select>
+      <input class="form-control mb-2" type="color" name="color" value="#14b8a6">
+      <button class="btn btn-primary">Crear</button>
+    </form>
+    <form class="card card-body" method="post" action="{{ url_for('taxonomy.merge_categories') }}">
+      <h2 class="h6">Fusionar categorías</h2>
+      <select class="form-select mb-2" name="source_id" required><option value="">Origen</option>{% for c in categories %}<option value="{{ c.id }}">{{ c.name }}</option>{% endfor %}</select>
+      <select class="form-select mb-2" name="target_id" required><option value="">Destino</option>{% for c in categories %}<option value="{{ c.id }}">{{ c.name }}</option>{% endfor %}</select>
+      <button class="btn btn-outline-secondary">Fusionar</button>
+    </form>
+  </div>
+  <div class="col-md-8">
+    <div class="list-group">
+      {% for c in categories %}
+      <div class="list-group-item">
+        <strong>{{ c.name }}</strong>
+        {% if c.parent %}<span class="small text-muted"> · subcategoría de {{ c.parent.name }}</span>{% endif %}
+        <div class="small text-muted">{{ c.description or "-" }}</div>
+      </div>
+      {% else %}
+      <div class="list-group-item text-muted">Sin categorías.</div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}

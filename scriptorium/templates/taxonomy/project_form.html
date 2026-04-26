@@ -1,0 +1,6 @@
+{# templates/taxonomy/project_form.html
+   Placeholder reutilizable de formulario de proyecto.
+   Arquitectura: Views. #}
+<form method="post" action="{{ url_for('taxonomy.create_project') }}">
+  <input name="name" placeholder="Nombre">
+</form>

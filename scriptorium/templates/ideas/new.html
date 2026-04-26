@@ -1,0 +1,36 @@
+{# templates/ideas/new.html
+   Formulario de alta manual de ideas.
+   Arquitectura: Views. #}
+{% extends "base.html" %}
+{% block title %}Nueva idea | Scriptorium{% endblock %}
+{% block content %}
+<h1 class="h3 mb-3">Nueva idea</h1>
+<form method="post" action="{{ url_for('ideas.create_idea') }}">
+  <div class="card card-body">
+    <div class="mb-3">
+      <label class="form-label">Texto de la idea</label>
+      <textarea class="form-control" name="text" rows="6" required></textarea>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Título (opcional)</label>
+      <input class="form-control" name="title">
+    </div>
+    <div class="row g-2">
+      <div class="col-md-4"><label class="form-label">Ámbito</label><select class="form-select" name="scope_id"><option value="">-</option>{% for x in scopes %}<option value="{{x.id}}">{{x.name}}</option>{% endfor %}</select></div>
+      <div class="col-md-4"><label class="form-label">Proyecto</label><select class="form-select" name="project_id"><option value="">-</option>{% for x in projects %}<option value="{{x.id}}">{{x.name}}</option>{% endfor %}</select></div>
+      <div class="col-md-4"><label class="form-label">Categoría</label><select class="form-select" name="category_id"><option value="">-</option>{% for x in categories %}<option value="{{x.id}}">{{x.name}}</option>{% endfor %}</select></div>
+      <div class="col-md-4"><label class="form-label">Estado</label><select class="form-select" name="status">{% for x in statuses %}<option {% if x=='semilla' %}selected{% endif %}>{{x}}</option>{% endfor %}</select></div>
+      <div class="col-md-4"><label class="form-label">Madurez</label><select class="form-select" name="maturity_level">{% for x in maturities %}<option {% if x=='semilla' %}selected{% endif %}>{{x}}</option>{% endfor %}</select></div>
+      <div class="col-md-4"><label class="form-label">Prioridad</label><input type="number" class="form-control" name="priority" min="1" max="5" value="3"></div>
+      <div class="col-md-6"><label class="form-label">Etiquetas</label><select class="form-select" multiple name="tags">{% for t in tags %}<option value="{{ t.id }}">{{ t.name }}</option>{% endfor %}</select></div>
+      <div class="col-md-6"><label class="form-label">Fecha de revisión</label><input type="datetime-local" class="form-control" name="review_at"></div>
+    </div>
+    <div class="mt-3 d-flex gap-2">
+      <button class="btn btn-primary" name="action" value="save">Guardar</button>
+      <button class="btn btn-outline-primary" name="action" value="save_find_relations">Guardar y buscar relaciones</button>
+      <button class="btn btn-outline-secondary" name="action" value="save_task">Guardar como tarea</button>
+      <button class="btn btn-outline-success" name="action" value="save_project">Guardar como proyecto emergente</button>
+    </div>
+  </div>
+</form>
+{% endblock %}

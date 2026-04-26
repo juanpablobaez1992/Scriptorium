@@ -1,0 +1,18 @@
+{# templates/ideas/orphan.html
+   Vista de ideas huérfanas.
+   Arquitectura: Views. #}
+{% extends "base.html" %}
+{% block title %}Ideas huérfanas | Scriptorium{% endblock %}
+{% block content %}
+<h1 class="h3 mb-3">Ideas huérfanas</h1>
+<div class="list-group">
+  {% for idea in ideas %}
+    <a class="list-group-item list-group-item-action" href="{{ url_for('ideas.idea_detail', id=idea.id) }}">
+      <strong>{{ idea.title }}</strong>
+      <div class="small text-muted">Proyecto: {{ idea.project.name if idea.project else "sin proyecto" }} | Categoría: {{ idea.category.name if idea.category else "sin categoría" }} | Relaciones: {{ idea.relation_count() }}</div>
+    </a>
+  {% else %}
+    <div class="list-group-item text-muted">No hay ideas huérfanas.</div>
+  {% endfor %}
+</div>
+{% endblock %}

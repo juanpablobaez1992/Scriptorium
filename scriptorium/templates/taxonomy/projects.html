@@ -1,0 +1,38 @@
+{# templates/taxonomy/projects.html
+   Gestión de proyectos.
+   Arquitectura: Views. #}
+{% extends "base.html" %}
+{% block title %}Proyectos | Scriptorium{% endblock %}
+{% block content %}
+<h1 class="h3 mb-3">Proyectos</h1>
+<div class="row g-3">
+  <div class="col-md-4">
+    <form class="card card-body" method="post" action="{{ url_for('taxonomy.create_project') }}">
+      <h2 class="h6">Nuevo proyecto</h2>
+      <input class="form-control mb-2" name="name" placeholder="Nombre" required>
+      <select class="form-select mb-2" name="scope_id"><option value="">Ámbito</option>{% for x in scopes %}<option value="{{x.id}}">{{x.name}}</option>{% endfor %}</select>
+      <textarea class="form-control mb-2" name="description" placeholder="Descripción"></textarea>
+      <select class="form-select mb-2" name="status">
+        <option>activo</option><option>pausado</option><option>finalizado</option><option>archivado</option><option>emergente</option>
+      </select>
+      <input class="form-control mb-2" type="color" name="color" value="#0ea5e9">
+      <button class="btn btn-primary">Crear</button>
+    </form>
+  </div>
+  <div class="col-md-8">
+    <div class="list-group">
+      {% for project in projects %}
+      <div class="list-group-item">
+        <div class="d-flex justify-content-between">
+          <strong>{{ project.name }}</strong>
+          <span class="badge text-bg-secondary">{{ project.status }}</span>
+        </div>
+        <div class="small text-muted">{{ project.scope.name if project.scope else "Sin ámbito" }} · {{ project.description or "-" }}</div>
+      </div>
+      {% else %}
+      <div class="list-group-item text-muted">Sin proyectos.</div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}

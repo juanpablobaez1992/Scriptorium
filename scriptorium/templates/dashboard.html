@@ -1,0 +1,65 @@
+{# templates/dashboard.html
+   Vista principal del sistema.
+   Arquitectura: Views. #}
+{% extends "base.html" %}
+{% block title %}Dashboard | Scriptorium{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h1 class="h3">Dashboard</h1>
+  <div>
+    <a href="{{ url_for('ideas.new_idea') }}" class="btn btn-primary">Nueva idea</a>
+    <a href="{{ url_for('graph.graph_page') }}" class="btn btn-outline-primary">Ver grafo</a>
+    <a href="{{ url_for('review.weekly_review') }}" class="btn btn-outline-secondary">Revisión semanal</a>
+  </div>
+</div>
+<div class="row g-3 mb-4">
+  <div class="col-md-2"><div class="card stat-card"><div class="card-body"><small>Total</small><div class="h4">{{ total_ideas }}</div></div></div></div>
+  <div class="col-md-2"><div class="card stat-card"><div class="card-body"><small>Hoy</small><div class="h4">{{ ideas_today }}</div></div></div></div>
+  <div class="col-md-2"><div class="card stat-card"><div class="card-body"><small>Semana</small><div class="h4">{{ ideas_week }}</div></div></div></div>
+  <div class="col-md-2"><div class="card stat-card"><div class="card-body"><small>Sugerencias</small><div class="h4">{{ suggestions_pending }}</div></div></div></div>
+  <div class="col-md-2"><div class="card stat-card"><div class="card-body"><small>Huérfanas</small><div class="h4">{{ orphan_ideas }}</div></div></div></div>
+  <div class="col-md-2"><div class="card stat-card"><div class="card-body"><small>Proyectos activos</small><div class="h4">{{ active_projects }}</div></div></div></div>
+</div>
+
+<div class="row g-4">
+  <div class="col-lg-8">
+    <div class="card">
+      <div class="card-header">Últimas ideas</div>
+      <div class="list-group list-group-flush">
+        {% for idea in latest_ideas %}
+          <a class="list-group-item list-group-item-action" href="{{ url_for('ideas.idea_detail', id=idea.id) }}">
+            <strong>{{ idea.title }}</strong>
+            <div class="text-muted small">{{ idea.summary or "-" }}</div>
+          </a>
+        {% else %}
+          <div class="list-group-item text-muted">Todavía no hay ideas.</div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-4">
+    <div class="card mb-3">
+      <div class="card-header">Ideas núcleo</div>
+      <ul class="list-group list-group-flush">
+        {% for idea in core_ideas %}
+          <li class="list-group-item d-flex justify-content-between">
+            <a href="{{ url_for('ideas.idea_detail', id=idea.id) }}">{{ idea.title }}</a>
+            <span class="badge text-bg-primary">{{ idea.relation_count() }}</span>
+          </li>
+        {% else %}
+          <li class="list-group-item text-muted">Sin nodos núcleo todavía.</li>
+        {% endfor %}
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-header">Distribución rápida</div>
+      <div class="card-body small">
+        <strong>Por estado</strong>
+        <ul>{% for s, c in by_status %}<li>{{ s or "sin estado" }}: {{ c }}</li>{% endfor %}</ul>
+        <strong>Por madurez</strong>
+        <ul>{% for s, c in by_maturity %}<li>{{ s or "sin madurez" }}: {{ c }}</li>{% endfor %}</ul>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
