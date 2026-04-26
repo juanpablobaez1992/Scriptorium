@@ -41,5 +41,4 @@ jobs:
           envs: APP_DIR,HEALTHCHECK_URL,DEPLOY_HTTPS,DEPLOY_REF
           script: |
             cd "${APP_DIR:-/srv/scriptorium}"
-            chmod +x deploy/vps/deploy.sh
-            ./deploy/vps/deploy.sh "${APP_DIR:-/srv/scriptorium}" "${HEALTHCHECK_URL:-http://127.0.0.1:18082/healthz}" "${DEPLOY_REF:-main}"
+            bash deploy/vps/deploy.sh "${APP_DIR:-/srv/scriptorium}" "${HEALTHCHECK_URL:-http://127.0.0.1:18082/healthz}" "${DEPLOY_REF:-main}"
