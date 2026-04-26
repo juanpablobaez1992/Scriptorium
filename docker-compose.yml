@@ -12,11 +12,11 @@ services:
       FLASK_DEBUG: "0"
       APP_HOST: 0.0.0.0
       APP_PORT: "5000"
-      PREFERRED_URL_SCHEME: https
-      SESSION_COOKIE_SECURE: "1"
-      INIT_DB_ON_BOOT: "1"
-      STORAGE_PATH: /app/scriptorium/storage
-      DATABASE_URL: sqlite:////app/scriptorium/instance/scriptorium.db
+      PREFERRED_URL_SCHEME: ${PREFERRED_URL_SCHEME:-http}
+      SESSION_COOKIE_SECURE: ${SESSION_COOKIE_SECURE:-0}
+      INIT_DB_ON_BOOT: ${INIT_DB_ON_BOOT:-1}
+      STORAGE_PATH: ${STORAGE_PATH:-/app/scriptorium/storage}
+      DATABASE_URL: ${DATABASE_URL:-sqlite:////app/scriptorium/instance/scriptorium.db}
     expose:
       - "5000"
     volumes:
