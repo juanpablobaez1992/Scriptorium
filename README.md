@@ -151,7 +151,7 @@ Valores sugeridos:
 
 - `VPS_PORT=22`
 - `VPS_APP_DIR=/srv/scriptorium`
-- `VPS_HEALTHCHECK_URL=http://127.0.0.1/healthz`
+- `VPS_HEALTHCHECK_URL=http://127.0.0.1:18082/healthz`
 - `VPS_DEPLOY_HTTPS=0`
 
 ## Configuracion `.env`

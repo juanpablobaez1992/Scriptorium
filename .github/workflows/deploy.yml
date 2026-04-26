@@ -26,7 +26,7 @@ jobs:
         uses: appleboy/ssh-action@v1.2.0
         env:
           APP_DIR: ${{ secrets.VPS_APP_DIR || '/srv/scriptorium' }}
-          HEALTHCHECK_URL: ${{ secrets.VPS_HEALTHCHECK_URL || 'http://127.0.0.1/healthz' }}
+          HEALTHCHECK_URL: ${{ secrets.VPS_HEALTHCHECK_URL || 'http://127.0.0.1:18082/healthz' }}
           DEPLOY_HTTPS: ${{ secrets.VPS_DEPLOY_HTTPS || '0' }}
         with:
           host: ${{ secrets.VPS_HOST }}
@@ -37,4 +37,4 @@ jobs:
           script: |
             cd "${APP_DIR:-/srv/scriptorium}"
             chmod +x deploy/vps/deploy.sh
-            ./deploy/vps/deploy.sh "${APP_DIR:-/srv/scriptorium}" "${HEALTHCHECK_URL:-http://127.0.0.1/healthz}"
+            ./deploy/vps/deploy.sh "${APP_DIR:-/srv/scriptorium}" "${HEALTHCHECK_URL:-http://127.0.0.1:18082/healthz}"
